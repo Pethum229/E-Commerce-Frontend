@@ -51,6 +51,9 @@ export const Api = createApi({
     getProduct: builder.query({
       query: (id) => `products/${id}`,
     }),
+    getOrderForUser: builder.query({
+      query: () => `orders/user`,
+    }),
   }),
 });
 
@@ -64,4 +67,5 @@ export const {
   useCreateCheckoutSessionMutation,
   useUpdateProductQuantityMutation,
   useGetProductQuery,
+  useGetOrderForUserQuery,
 } = Api;
