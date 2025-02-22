@@ -10,9 +10,10 @@ import AdminProtected from "@/layouts/AdminProtected";
 
 import CartPage from "./pages/cart.page";
 import CheckoutPage from "./pages/checkout.page";
-import HomePage from "./pages/home/home.page";
+import HomePage from "./pages/home.page";
 import SignInPage from "./pages/sign-in.page";
 import SignUpPage from "./pages/sign-up.page";
+import ShopPage from "./pages/shop.page"
 
 import MainLayout from "./layouts/main.layout";
 import RootLayout from "./layouts/rootLayout/root.layout";
@@ -37,6 +38,7 @@ createRoot(document.getElementById("root")).render(
           <Route element={<RootLayout />}>
             <Route element={<MainLayout />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
               {/* The Protected layout can be used to wrap routes that needs to be logged in to access */}
               <Route element={<Protected />}>
                 <Route path="/shop/cart" element={<CartPage />} />

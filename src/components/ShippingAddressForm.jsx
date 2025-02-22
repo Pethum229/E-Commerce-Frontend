@@ -13,7 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router";
-import { useCreateOrderMutation } from "@/lib/api";
+import {
+  useCreateOrderMutation,
+  useUpdateProductQuantityMutation,
+} from "@/lib/api";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -34,10 +37,12 @@ const formSchema = z.object({
 });
 
 const ShippingAddressForm = ({ cart }) => {
+  console.log("This is cart", cart);
   const form = useForm({
     resolver: zodResolver(formSchema),
   });
   const [createOrder, { isLoading, isError, data }] = useCreateOrderMutation();
+  const [updateProductQuantity] = useUpdateProductQuantityMutation();
   const navigate = useNavigate();
 
   function handleSubmit(values) {
@@ -52,6 +57,14 @@ const ShippingAddressForm = ({ cart }) => {
         phone: values.phone,
       },
     });
+
+    let payload = cart.map((item) => ({
+      productId: item.product._id,
+      quantity: item.quantity,
+    }));
+    
+    updateProductQuantity(payload);
+
     toast.success("Checkout successful");
     navigate("/shop/payment");
   }

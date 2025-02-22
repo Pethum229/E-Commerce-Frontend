@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductCards from "./ProductCards";
 import Tab from "./Tab";
+import SortDropDown from "../SortDropDown";
 
 function Products(props) {
   const {
@@ -24,16 +25,28 @@ function Products(props) {
   const filteredProducts =
     selectedCategoryId === "ALL"
       ? products
-      : products.filter((product) => product.categoryId === selectedCategoryId);
+      : products?.filter((product) => product.categoryId === selectedCategoryId);
+
+  const [sortByPrice, setSortByPrice] = useState("asc");
+  const sortedProducts = 
+    filteredProducts
+      ? (sortByPrice === "asc"
+          ? [...filteredProducts].sort((a,b) => a.price - b.price)
+          : [...filteredProducts].sort((a,b) => b.price - a.price))
+      : [];
 
   const handleTabClick = (_id) => {
     setSelectedCategoryId(_id);
   };
 
+  const handleDropdownChange = (value) => {
+    setSortByPrice(value);
+  }
+
   if (isProductsLoading || isCategoriesLoading) {
     return (
       <section className="px-8 py-8">
-        <h2 className="text-4xl font-bold">Our Top Products</h2>
+        <h2 className="text-4xl font-bold">{props.secName}</h2>
 
         <Separator className="mt-2" />
         <div className="mt-4 flex items-center gap-4">
@@ -52,7 +65,7 @@ function Products(props) {
   if (isProductsError || isCategoriesError) {
     return (
       <section className="px-8 py-8">
-        <h2 className="text-4xl font-bold">Our Top Products</h2>
+        <h2 className="text-4xl font-bold">{props.secName}</h2>
 
         <Separator className="mt-2" />
         <div className="mt-4 flex items-center gap-4"></div>
@@ -65,20 +78,26 @@ function Products(props) {
 
   return (
     <section className="px-8 py-8">
-      <h2 className="text-4xl font-bold">Our Top Products</h2>
+      <h2 className="text-4xl font-bold">{props.secName}</h2>
       <Separator className="mt-2" />
-      <div className="mt-4 flex items-center gap-4">
-        {[...categories, { _id: "ALL", name: "All" }].map((category) => (
-          <Tab
-            key={category._id}
-            _id={category._id}
-            selectedCategoryId={selectedCategoryId}
-            name={category.name}
-            onTabClick={handleTabClick}
-          />
-        ))}
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          {[...categories, { _id: "ALL", name: "All" }].map((category) => (
+            <Tab
+              key={category._id}
+              _id={category._id}
+              selectedCategoryId={selectedCategoryId}
+              name={category.name}
+              onTabClick={handleTabClick}
+            />
+          ))}
+        </div>
+        <SortDropDown 
+          sortByPrice={sortByPrice}
+          onSortChange={handleDropdownChange}
+        />
       </div>
-      <ProductCards products={filteredProducts} />
+      <ProductCards products={sortedProducts} />
     </section>
   );
 }

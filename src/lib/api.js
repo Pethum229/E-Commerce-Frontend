@@ -41,6 +41,13 @@ export const Api = createApi({
         method: "POST",
       }),
     }),
+    updateProductQuantity: builder.mutation({
+      query: (body) => ({
+        url: `products/inventory`,
+        method: 'PATCH',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -52,4 +59,5 @@ export const {
   useCreateOrderMutation,
   useGetOrderQuery,
   useCreateCheckoutSessionMutation,
+  useUpdateProductQuantityMutation,
 } = Api;
