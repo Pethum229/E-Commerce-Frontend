@@ -22,6 +22,7 @@ import CompletePage from "./pages/complete.page";
 import PaymentPage from "./pages/payment.page";
 
 import AdminProductCreatePage from "./pages/admin-product-create.page";
+import ProductPage from "./pages/product.page";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
             <Route element={<MainLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/product/:productId" element={<ProductPage />} />
               {/* The Protected layout can be used to wrap routes that needs to be logged in to access */}
               <Route element={<Protected />}>
                 <Route path="/shop/cart" element={<CartPage />} />
