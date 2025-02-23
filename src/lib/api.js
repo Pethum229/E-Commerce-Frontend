@@ -54,6 +54,14 @@ export const Api = createApi({
     getOrderForUser: builder.query({
       query: () => `orders/user`,
     }),
+    createProduct: builder.mutation({
+      query: (productData) => ({
+        url: 'products',
+        method: 'POST',
+        body: productData,
+      }),
+      invalidatesTags: ['Products'],
+    }),
   }),
 });
 
@@ -68,4 +76,5 @@ export const {
   useUpdateProductQuantityMutation,
   useGetProductQuery,
   useGetOrderForUserQuery,
+  useCreateProductMutation,
 } = Api;
